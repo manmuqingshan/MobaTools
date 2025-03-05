@@ -22,7 +22,9 @@
   MobaTools V2.7.0
    
   History:
-  V2.7.0 3-2024
+  V2.7.1 x-2025
+	- RP204 processers: priority of timer IRQ can be set in MobaTools.h
+  V2.7.0 3-2025
     - New class for synced move of steppers ( without acceleration )
 	- Example for synced move
 	- New example: servos for turnouts
@@ -189,6 +191,8 @@
 									// with WiFi active
 #elif defined ARDUINO_ARCH_RP2040 && !defined ARDUINO_ARCH_MBED  ///////////////////////////////////////////////////////////
 	#define MIN_STEP_CYCLE 20       // increment for nextCycle if too short
+	#define IRQ_PRIO 64				// NVIC priority of timer IRQ ( stepper&softleds) - 128 is default for SDK
+									// lower value = higher priority
 	//#define USE_SPI1				// if SPI 1 for SPI-Stepper should be used ( not possible on nano RP2040 )
 	#define STP_TIMR_NBR 0          // can be set to 1 on RP2350 ( Pico 2 )
 	#define SPI_CLOCK 2000000L

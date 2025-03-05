@@ -55,6 +55,9 @@ void __not_in_flash_func(ISR_Stepper)() {
   CLR_TP1; // Oszimessung Dauer der ISR-Routine
 }
 
+#ifndef IRQ_PRIO
+#define IRQ_PRIO 64   // default for all IRQ's in SDK is 128 ( lower value = higher priority )
+#endif
 
 bool seizeTimerAS() {
   static bool timerInitialized = false;
@@ -74,7 +77,7 @@ bool seizeTimerAS() {
     DB_PRINT("Alm=%d, Timer=%d, IRQNum=%d", stepperAlarm, timer_get_index(motoRPtimer), stepperIRQNum ); Serial.flush();
     hw_set_bits(&motoRPtimer->inte, 1u << stepperAlarm); // enable Alarm irq in timer-HW
     irq_set_exclusive_handler(stepperIRQNum, ISR_Stepper); // set IRQ handler
-    irq_set_priority(stepperIRQNum, 10);    // default is 128 ( lower value = higher priority )
+    irq_set_priority(stepperIRQNum, IRQ_PRIO); 
     irq_set_enabled (stepperIRQNum, true);  // enable Alarm IRQ in NVIC
     /*/ NUR FÜR TEST: Alarm-Überlauf Timer kurz vor Überlauf stellen.
     motoRPtimer->timelw = 4290000000L;
