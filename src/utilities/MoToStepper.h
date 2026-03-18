@@ -119,7 +119,7 @@ typedef struct stepperData_t {
 	volatile uint32_t aCycSteps;  // µseconds per step ( actual motorspeed  )
 	uint32_t cyctXramplen;        // precompiled  tCycSteps*(rampLen+RAMPOFFSET)
     uint16_t cycDelay;            // delay time: enable -> stepping
-    boolean  dirChange;          // Flag: Dir has to be changed ( at falling edge )
+    bool  dirChange;          // Flag: Dir has to be changed ( at falling edge )
   #else
 	// on the other platforms the time values count in cycles.
     // On 32-bit processors cyclelength is 1 µsec, and there is no remainder

@@ -15,7 +15,7 @@ MoToSyncStepper::MoToSyncStepper()
     : _stepperChainP(NULL), _numSteppers(0), _maxSpeed(5000), _rampLen(0)  {
 }
 
-boolean MoToSyncStepper::addStepper(MoToStepper& stepper) {
+bool MoToSyncStepper::addStepper(MoToStepper& stepper) {
     if (_numSteppers >= MAX_STEPPER) 	return false; // No room for more
 	// Add stepper to sync-chain
 	// create new struct for new stepper at heap

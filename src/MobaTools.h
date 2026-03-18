@@ -22,6 +22,8 @@
   MobaTools V3.0.0
    
   History:
+  V3.1 xx-2026
+  - support of STM32 core (by STMicroelectronics)
   V3.0 03-2026
   - Old method names (compatibility to V1 ) are no longer available
   - Synced stepper movement with acceleration
@@ -110,6 +112,10 @@
 
 ////////////////////////// STM32F4 (experimental )  //////////////////////////////////////
 #elif defined ARDUINO_ARCH_STM32F4 
+	#define MIN_STEP_CYCLE  25   // Minimum number of µsec  per step 
+
+////////////////////////// STM32 ( ST-Microelectronics )  //////////////////////////////////////
+#elif defined ARDUINO_ARCH_STM32 
 	#define MIN_STEP_CYCLE  25   // Minimum number of µsec  per step 
 
 /////////////////////////////// not supported //////////////////////////////
