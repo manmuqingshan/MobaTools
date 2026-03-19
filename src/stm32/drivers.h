@@ -28,7 +28,9 @@
 extern bool timerInitialized;
 void seizeTimer1();
 #define USE_SPI2          // Use SPI1 if not defined
+#ifndef PIN_SPI_SS
 #define PIN_SPI_SS PA4
+#endif
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ STM32F4 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 #define ARCHITECT_INCLUDE <stm32/MoToSTM32.h>
