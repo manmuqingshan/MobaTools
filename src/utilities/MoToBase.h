@@ -22,8 +22,8 @@
 	#endif	
 #elif defined ARDUINO_ARCH_STM32F1
 	#include <stm32f1/drivers.h>
-#elif defined ARDUINO_ARCH_STM32F4
-	#include <stm32f4/drivers.h>
+//#elif defined ARDUINO_ARCH_STM32F4
+//	#include <stm32f4/drivers.h>
 #elif defined ARDUINO_ARCH_STM32
 	#include <stm32/drivers.h>
 #elif defined ARDUINO_ARCH_ESP8266

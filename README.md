@@ -18,7 +18,8 @@ Released versions can be installed by means of the library manager in arduino ID
 - Renesas RA4M1 ( UNO R4 )
 - SamD21 (MKR-Series, Nano 33 Iot ...)
 - RP2040 / RP2350 processors ( the [core of Earle Philhower](https://github.com/earlephilhower/arduino-pico) must be used )
-- STM32F103x processors ( the [core of Roger Clark](https://github.com/rogerclarkmelbourne/Arduino_STM32) must be used )
+- STM32F103x processors ( with [core of Roger Clark](https://github.com/rogerclarkmelbourne/Arduino_STM32)
+- STM32Fxxx processors with STM32duino core (tested with F103 Blue-/Blackpill, F401/F411 Blackpill and Nucleo F411RE)
 - ESP32 ( core versions 2.x and 3.x )
 - ESP32S3 ( Arduino Nano ESP32 ) and other variants (C3,C6,S3,S2)
 - ESP8266 ( with some restrictions )
@@ -29,6 +30,8 @@ A documentation file in [german](https://github.com/MicroBahner/MobaTools/blob/m
 
 | Version |  Release Date  | Description
 | ------- |  ------------  | -----------
+| 3.1.0 | 2026-04-xx| 
+| | | support of the STM32duino core by STMicrosystems
 | 3.0.0 | 2026-03-07| 
 | | | old classnames from V1.x are no longer valid
 | | | Support of SamD21 MCU (MKR-Series, Nano 33 Iot ...)

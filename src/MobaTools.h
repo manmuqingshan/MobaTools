@@ -23,7 +23,7 @@
    
   History:
   V3.1 xx-2026
-  - support of STM32 core (by STMicroelectronics)
+  - support of STM32duino core (by STMicroelectronics)
   V3.0 03-2026
   - Old method names (compatibility to V1 ) are no longer available
   - Synced stepper movement with acceleration
@@ -110,10 +110,10 @@
 	//#define MIN_STEP_CYCLE  25   	// Minimum number of µsec  per step, default is 25
 	//#define USE_SPI2				// default is using SPI1
 
-////////////////////////// STM32F4 (experimental )  //////////////////////////////////////
+/*//////////////////////// STM32F4 (experimental )  //////////////////////////////////////
 #elif defined ARDUINO_ARCH_STM32F4 
 	#define MIN_STEP_CYCLE  25   // Minimum number of µsec  per step 
-
+*/
 ////////////////////////// STM32 ( ST-Microelectronics )  //////////////////////////////////////
 #elif defined ARDUINO_ARCH_STM32 
 	#define MIN_STEP_CYCLE  25   // Minimum number of µsec  per step 

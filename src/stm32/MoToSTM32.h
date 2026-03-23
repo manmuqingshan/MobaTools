@@ -74,7 +74,12 @@ static inline __attribute__((__always_inline__)) void enableSoftLedIsrAS() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 #if defined COMPILING_MOTOSTEPPER_CPP
-
+/*
+#if defined(USE_SPI2) && defined (ARDUINO_BLUEPILL_F103C8)
+	SPIClass mtSPI(PB15,PB14,PB13); // SPI2 on BluePill
+	#define SPI mtSPI
+#endif
+*/
 
 
 static inline __attribute__((__always_inline__)) void enableStepperIsrAS() {
@@ -87,7 +92,7 @@ static inline __attribute__((__always_inline__)) void initSpiAS() {
     // initialize SPI hardware.
     // MSB first, default Clk Level is 0, shift on leading edge
 	//TODO - initialize Samd SPI
-	SPI.begin();	// Default SPI interface
+	SPI.begin();	// Default SPI interface ( instantiated by default )
 	pinMode(PIN_SPI_SS,OUTPUT);
     spiInitialized = true;  
 }
@@ -95,13 +100,18 @@ static inline __attribute__((__always_inline__)) void initSpiAS() {
 static inline __attribute__((__always_inline__)) void startSpiWriteAS( uint8_t spiData[] ) {
  	// TODO write step pattern over SPI
 	// Actual without IRQ
+	return;
 	digitalWrite(PIN_SPI_SS,LOW);
-	SPI.transfer16( spiData[1]<<8 | spiData[0] );
+	if ( MoToStepper::spi34Used() ) {
+		SPI.transfer16( spiData[1]<<8 | spiData[0] );
+	} else {
+		SPI.transfer( spiData[0] );
+	}
 	digitalWrite(PIN_SPI_SS,HIGH);
-       #ifdef USE_SPI2
-        #else
-        #endif
-    }    
+   #ifdef USE_SPI2
+	#else
+	#endif
+}    
     
 
 #endif // COMPILING_MOTOSTEPPER_CPP

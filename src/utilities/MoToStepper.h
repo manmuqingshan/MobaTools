@@ -183,6 +183,7 @@ typedef union { // used output channels as bit and uint8_t
       uint8_t outputs;
     
 } outUsed_t;
+constexpr uint8_t spi34UsedMsk = (1<<(SPI_3-SPI_1)) | (1<<(SPI_4-SPI_1));  //=0x0C;	// Bitmask to check if SPI_3 or SPI_4 is used
 
 extern stepperData_t *stepperRootP; // Start aller verketteten Stepper ( wird auch in MoToSyncStepper benötigt )
 //////////////////////////////////////////////////////////////////////////////
@@ -267,6 +268,7 @@ class MoToStepper
     void prDynData();             // print actual Stepperdata
     
     //some AccelStepper compatible method names ( may be sligtly different in functionality
+	static bool spi34Used()			{ return ( MoToStepper::outputsUsed.outputs && spi34UsedMsk ); }
     void moveTo ( long stepPos )    { writeSteps( stepPos ); }
     void move(long count)           { doSteps( count ); }
     uintxx_t setMaxSpeed( uintxx_t speed ){ return setSpeedSteps( speed*10 ); }
