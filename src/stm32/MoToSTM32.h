@@ -11,7 +11,7 @@ extern uint8_t noStepISR_Cnt;   // Counter for nested StepISr-disable
 extern HardwareTimer mtTimer;
 extern TIM_HandleTypeDef *mtTimerHandle; 
 extern uint32_t stepChanIT;
-
+void ISR_Stepper();
 void seizeTimerAS();
 
 
@@ -67,7 +67,8 @@ static inline __attribute__((__always_inline__)) void setServoCmpAS(uint16_t cmp
 /////////////////////////////////////////////////////////////////////////////////////////////////
 #if defined COMPILING_MOTOSOFTLED32_CPP
 static inline __attribute__((__always_inline__)) void enableSoftLedIsrAS() {
-    __HAL_TIM_ENABLE_IT(mtTimerHandle, mtTimer.getIT(STEP_CHN) );
+		mtTimer.attachInterrupt(STEP_CHN, ISR_Stepper); // Attach interrupt callback which will be called upon compare match event of specified channel        mtTimer.attach_interrupt(MT_TIMER, mtTimer.STEPCH_IRQ, (voidFuncPtr)ISR_Stepper );
+    //__HAL_TIM_ENABLE_IT(mtTimerHandle, mtTimer.getIT(STEP_CHN) );
 }
 
 #endif // COMPILING_MOTOSOFTLED_CPP
@@ -83,24 +84,29 @@ static inline __attribute__((__always_inline__)) void enableSoftLedIsrAS() {
 
 
 static inline __attribute__((__always_inline__)) void enableStepperIsrAS() {
-    __HAL_TIM_ENABLE_IT(mtTimerHandle, mtTimer.getIT(STEP_CHN) );
+	SET_TP2;
+	mtTimer.attachInterrupt(STEP_CHN, ISR_Stepper); // Attach interrupt callback which will be called upon compare match event of specified channel        mtTimer.attach_interrupt(MT_TIMER, mtTimer.STEPCH_IRQ, (voidFuncPtr)ISR_Stepper );
+    //__HAL_TIM_ENABLE_IT(mtTimerHandle, mtTimer.getIT(STEP_CHN) );
+	CLR_TP2;
 }
 
 static uint8_t spiInitialized = false;
 static inline __attribute__((__always_inline__)) void initSpiAS() {
     if ( spiInitialized ) return;
+	SET_TP1;
     // initialize SPI hardware.
     // MSB first, default Clk Level is 0, shift on leading edge
 	//TODO - initialize Samd SPI
 	SPI.begin();	// Default SPI interface ( instantiated by default )
 	pinMode(PIN_SPI_SS,OUTPUT);
+	digitalWrite(PIN_SPI_SS,HIGH);
     spiInitialized = true;  
+	CLR_TP1;
 }
 
 static inline __attribute__((__always_inline__)) void startSpiWriteAS( uint8_t spiData[] ) {
  	// TODO write step pattern over SPI
 	// Actual without IRQ
-	return;
 	digitalWrite(PIN_SPI_SS,LOW);
 	if ( MoToStepper::spi34Used() ) {
 		SPI.transfer16( spiData[1]<<8 | spiData[0] );

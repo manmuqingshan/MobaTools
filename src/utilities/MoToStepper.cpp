@@ -278,11 +278,12 @@ uint8_t MoToStepper::attach( outArg_t outArg, byte pins[] ) {
     if ( attachOK ) {
         _stepperData.output = outArg;
         _stepperData.rampState = rampStat::STOPPED;
-		DB_PRINT("Defaults setzen");
-        setSpeedSteps( DEF_SPEEDSTEPS, DEF_RAMP );
 		DB_PRINT("Timer einrichten");
         seizeTimerAS();
         enableStepperIsrAS();
+		DB_PRINT("Defaults setzen");
+        setSpeedSteps( DEF_SPEEDSTEPS, DEF_RAMP );
+		DB_PRINT("spi34UsedMsk = %02X, ",spi34UsedMsk);
     }
     DB_PRINT( "attach: output=%d, attachOK=%d", _stepperData.output, attachOK );
     //Serial.print( "Attach Stepper, Ix= "); Serial.println( _stepperIx );

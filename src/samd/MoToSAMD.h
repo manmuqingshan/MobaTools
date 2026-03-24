@@ -87,7 +87,11 @@ static inline __attribute__((__always_inline__)) void startSpiWriteAS( uint8_t s
 	// TODO write step pattern over SPI
 	// Actual without IRQ
 	digitalWrite(PIN_SPI_SS,LOW);
-	SPI.transfer16( spiData[1]<<8 | spiData[0] );
+	if ( MoToStepper::spi34Used() ) {
+		SPI.transfer16( spiData[1]<<8 | spiData[0] );
+	} else {
+		SPI.transfer( spiData[0] );
+	}
 	digitalWrite(PIN_SPI_SS,HIGH);
 }    
     

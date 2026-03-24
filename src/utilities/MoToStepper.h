@@ -268,7 +268,7 @@ class MoToStepper
     void prDynData();             // print actual Stepperdata
     
     //some AccelStepper compatible method names ( may be sligtly different in functionality
-	static bool spi34Used()			{ return ( MoToStepper::outputsUsed.outputs && spi34UsedMsk ); }
+	static bool spi34Used()			{ return ( MoToStepper::outputsUsed.outputs & spi34UsedMsk ); }
     void moveTo ( long stepPos )    { writeSteps( stepPos ); }
     void move(long count)           { doSteps( count ); }
     uintxx_t setMaxSpeed( uintxx_t speed ){ return setSpeedSteps( speed*10 ); }

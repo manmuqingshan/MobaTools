@@ -228,8 +228,27 @@
         #define MODE_TP4
         #define SET_TP4
         #define CLR_TP4
- 
-	#else // processor not known
+
+	#elif defined ARDUINO_NUCLEO_F411RE
+		#pragma message "Debugports for NucleoF411RE"
+        //Test-HW füer Stepper:
+        #define TP1 A2
+        #define TP2 A3
+        #define TP3 A4 
+        #define TP4 A5
+        #define MODE_TP1 pinMode( TP1,OUTPUT )   
+        #define SET_TP1  digitalWrite( TP1, HIGH )
+        #define CLR_TP1  digitalWrite( TP1, LOW )
+        #define MODE_TP2 pinMode( TP2,OUTPUT )  
+        #define SET_TP2  digitalWrite( TP2, HIGH )
+        #define CLR_TP2  digitalWrite( TP2, LOW )
+        #define MODE_TP3 pinMode( TP3,OUTPUT )   // 
+        #define SET_TP3  digitalWrite( TP3, HIGH )
+        #define CLR_TP3  digitalWrite( TP3, LOW )
+        #define MODE_TP4 pinMode( TP4,OUTPUT )   // 
+        #define SET_TP4  digitalWrite( TP4, HIGH )
+        #define CLR_TP4  digitalWrite( TP4, LOW )
+ 	#else // processor not known
 		#pragma message  "no testpins - processor unknown"
         #define MODE_TP1
         #define SET_TP1

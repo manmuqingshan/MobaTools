@@ -41,30 +41,31 @@ void ISR_Stepper() {
 	
     mtTimer.setCaptureCompare(STEP_CHN, actCompare+add2Ocr ) ;
     cyclesLastIRQ = nextCycle;
-    //CLR_TP1; // Oszimessung Dauer der ISR-Routine
+    CLR_TP1; // Oszimessung Dauer der ISR-Routine
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
 void seizeTimerAS() {
     static bool timerInitialized = false;
+        MODE_TP1;
+        MODE_TP2;
+        MODE_TP3;
+        MODE_TP4;
     if ( !timerInitialized ) {
+		SET_TP2;
         //mtTimer.init( MT_TIMER );
         mtTimer.pause();
         // IRQ-Priorität des timer interrupt auf lowest (15) setzen
         mtTimer.setInterruptPriority( 15, 15); // These long lasting IRQ's MUST be lowest priority
         mtTimer.setPrescaleFactor(TIMER_PRESCALER);    // = 0.5µs Tic
         mtTimer.setOverflow(0x10000);  //set the period (overflow at max)
-        mtTimer.setCaptureCompare( STEP_CHN, 400 );
-		mtTimer.attachInterrupt(STEP_CHN, ISR_Stepper); // Attach interrupt callback which will be called upon compare match event of specified channel        mtTimer.attach_interrupt(MT_TIMER, mtTimer.STEPCH_IRQ, (voidFuncPtr)ISR_Stepper );
-        mtTimer.setCaptureCompare(SERVO_CHN, FIRST_PULSE );
+        //mtTimer.setCaptureCompare( STEP_CHN, 400 );
+        //mtTimer.setCaptureCompare(SERVO_CHN, FIRST_PULSE );
+		stepChanIT = mtTimer.getIT(STEP_CHN);
         mtTimer.refresh();
         mtTimer.resume();
 		mtTimerHandle = mtTimer.getHandle(); 
-		stepChanIT = mtTimer.getIT(STEP_CHN);
         timerInitialized = true;  
-        MODE_TP1;
-        MODE_TP2;
-        MODE_TP3;
-        MODE_TP4;
+		CLR_TP2;
     }
 }
 
