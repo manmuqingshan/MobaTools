@@ -31,7 +31,8 @@ A documentation file in [german](https://github.com/MicroBahner/MobaTools/blob/m
 | Version |  Release Date  | Description
 | ------- |  ------------  | -----------
 | 3.1.0 | 2026-04-xx| 
-| | | support of the STM32duino core by STMicrosystems
+| | | support of the STM32duino core (STMicrosystems)
+| | | some optimizations and bugfixes
 | 3.0.0 | 2026-03-07| 
 | | | old classnames from V1.x are no longer valid
 | | | Support of SamD21 MCU (MKR-Series, Nano 33 Iot ...)
