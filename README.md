@@ -24,9 +24,46 @@ Released versions can be installed by means of the library manager in arduino ID
 - ESP32S3 ( Arduino Nano ESP32 ) and other variants (C3,C6,S3,S2)
 - ESP8266 ( with some restrictions )
 
-A documentation file in [german](https://github.com/MicroBahner/MobaTools/blob/master/MobaTools-300-de.pdf) and [english](https://github.com/MicroBahner/MobaTools/blob/master/MobaTools-300-en.pdf) is provided.
+A documentation file in [german](https://github.com/MicroBahner/MobaTools/blob/master/MobaTools-310-de.pdf) and [english](https://github.com/MicroBahner/MobaTools/blob/master/MobaTools-310-en.pdf) is provided.
 
-**Latest changes:**
+### Classes
+
+#### MoToServo: 
+Can control up to 16 servos. Compatible with arduino servo lib, but allows to control 
+the speed of the servo.
+
+#### MoToStepper: 
+A class to control stepper motors. The arduino sketch is not blocked while 
+the stepper is moving. After setting a reference point, the stepper can be positioned 
+absolutely just like a servo. But without the angle limitation of 0--180 degrees.
+
+#### MoToSyncStepper: 
+A class to move several steppers synchrounously with acceleration and deceleration.
+
+#### MoToSoftLed: 
+Allows easy softon / softoff of leds. It works on all digital outputs.
+
+#### MoToTimer: 
+Allows easy nonblocking timedelays in sketches. You don't have to bother with millis() directly
+
+#### MoToButtons: 
+Manage up to 32 buttons and switches with debounce and event handling (pressed, released, short press, long press, click and double click ) in one instance. The buttons/switches can be read in via a user callback function. This enables matrix arrangements and e.g. I2C port expander to be used.
+
+
+#### Additional Info:
+Apart from class MoToButtons, there is no special function that has to be called in the loop frequently. You can even use the delay() function in the loop while servos and steppers are moving.
+
+The library uses Timer1 for all classes (AVR). Timer 3 is used instead of timer 1 if available.
+On the STM32 platform, timer 4 is used.
+MoToButtons and MoToTimer do not use any timer und should be compatible with all plattforms.
+
+With ESP8266 waveform creating fuctions, and IO-interrupts are used. Because the core functions could not be used for this purpose, the integrated functions tone(), analogWrite() and servo() cannot be used together with MobaTools.
+To overcome this problem, there exists an additional class exclusively for the ESP8266 platform:
+#### MoToPwm ( only ESP8266 ):
+Contains Methods to create pwm and tone outputs.
+
+
+### Latest changes:
 
 | Version |  Release Date  | Description
 | ------- |  ------------  | -----------
@@ -104,39 +141,5 @@ A documentation file in [german](https://github.com/MicroBahner/MobaTools/blob/m
 | | | new method 'getSpeedSteps' returns actual speed
 | | | ESP8266 is now supported ( with limitations regarding stepper mode: only step/dir is possible )
 | | | classnames have changed ( the old names can still be used for compatibility, but should not be used in new sketches)
-
-### Classes
-
-#### MoToServo: 
-Can control up to 16 servos. Compatible with arduino servo lib, but allows to control 
-the speed of the servo.
-
-#### MoToStepper: 
-A class to control stepper motors. The arduino sketch is not blocked while 
-the stepper is moving. After setting a reference point, the stepper can be positioned 
-absolutely just like a servo. But without the angle limitation of 0--180 degrees.
-V1.1: Ramps can be defined to accelerate/decelerate the Stepper.
-
-#### MoToSoftLed: 
-Allows easy softon / softoff of leds. It works on all digital outputs.
-
-#### MoToTimer: 
-Allows easy nonblocking timedelays in sketches. You don't have to bother with millis() directly
-
-#### MoToButtons: 
-Manage up to 32 buttons and switches with debounce and event handling (pressed, released, short press, long press, click and double click ) in one instance. The buttons/switches can be read in via a user callback function. This enables matrix arrangements and e.g. I2C port expander to be used.
-
-
-#### Additional Info:
-Apart from class MoToButtons, there is no special function that has to be called in the loop frequently. You can even use the delay() function in the loop while servos and steppers are moving.
-
-The library uses Timer1 for all classes (AVR). V1.0: from this version on, timer 3 is used instead of timer 1 if available.
-On the STM32F1 platform, timer 4 is used.
-MoToButtons and MoToTimer do not use any timer und should be compatible with all plattforms.
-
-With ESP8266 waveform creating fuctions, and IO-interrupts are used. Because the core functions could not be used for this purpose, the integrated functions tone(), analogWrite() and servo() cannot be used together with MobaTools.
-To overcome this problem, there exists an additional class exclusively for the ESP8266 platform:
-#### MoToPwm ( only ESP8266 ):
-Contains Methods to create pwm and tone outputs.
 
 
