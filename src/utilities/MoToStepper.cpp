@@ -146,6 +146,7 @@ bool MoToStepper::_chkRunning() { // ###########################################
 uint8_t MoToStepper::attach( uint8_t stepP, uint8_t dirP, uint8_t invFlg ) { //######################################
 	// invFlg is a bitmap which pins should be inverted
     // step motor driver STEPDIR or FULLSTEP with only 2 pins is used
+	DB_PRINT("attach STEPDIR/FULLSTEP uint8: %d,%d,%d", stepP,dirP,invFlg);
     byte pins[2];
     if ( stepMode != STEPDIR && stepMode != FULLSTEP ) return 0;    // wrong mode
     DB_PRINT( "Attach with 2 pins, S=%d, D=%d\n\r", stepP, dirP );
@@ -161,6 +162,7 @@ uint8_t MoToStepper::attach( uint8_t stepP, uint8_t dirP, uint8_t invFlg ) { //#
 }
 #ifndef ESP8266  // no 4 or 2Pin Mode with ESP8266
 uint8_t MoToStepper::attach( uint8_t pin1, uint8_t pin2, uint8_t pin3, uint8_t pin4, uint8_t invFlg ) {
+	DB_PRINT("attach4PIN:%d,%d,%d,%d,%d",pin1,pin2,pin3,pin4,invFlg);
     byte pins[4];
     pins[0] = abs(pin1);
     pins[1] = abs(pin2);
@@ -175,7 +177,7 @@ uint8_t MoToStepper::attach( uint8_t pin1, uint8_t pin2, uint8_t pin3, uint8_t p
 uint8_t MoToStepper::attach( outArg_t outArg, byte ssPin, byte clkPin, byte MosiPin ) {
 	// SPI-attach with pin-definitions ( only some boards , mostly only SS-Pin can be set )
 	// This does not seem to work on Variants ESP32 C3,C6,S2 ...
-	DB_PRINT("SPI-Pins: SS=%d, SCK=%d, MOSI=%d", ssPin, clkPin, MosiPin );
+	DB_PRINT("SPI mode=%d,Pins: SS=%d, SCK=%d, MOSI=%d", outArg, ssPin, clkPin, MosiPin );
 	if ( outArg < SPI_1 ) return 0; // wrong mode
     byte pins[4];
     pins[0] = ssPin;
@@ -189,6 +191,7 @@ uint8_t MoToStepper::attach( outArg_t outArg, byte ssPin, byte clkPin, byte Mosi
 #ifndef NO_SPISTEPPER // with SPI Stepper
 uint8_t MoToStepper::attach(outArg_t outArg) {
 	// SPI-attach without pin-definitions
+	DB_PRINT("SPI-attach mode=%d", outArg );
 	if ( outArg < SPI_1 ) return 0; // wrong mode
     return MoToStepper::attach( outArg, (byte *)NULL );
 }

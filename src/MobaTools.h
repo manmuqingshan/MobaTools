@@ -112,11 +112,12 @@
 
 /*//////////////////////// STM32F4 (experimental )  //////////////////////////////////////
 #elif defined ARDUINO_ARCH_STM32F4 
-	#define MIN_STEP_CYCLE  25   // Minimum number of µsec  per step 
+	#define MIN_STEP_CYCLE  25   	// Minimum number of µsec  per step 
 */
 ////////////////////////// STM32 ( ST-Microelectronics )  //////////////////////////////////////
 #elif defined ARDUINO_ARCH_STM32 
-	#define MIN_STEP_CYCLE  25   // Minimum number of µsec  per step 
+	//#define MIN_STEP_CYCLE  25   	// Minimum number of µsec  per step, default is 25
+	#define USE_SPI2				// default is using SPI1
 
 /////////////////////////////// not supported //////////////////////////////
 #else

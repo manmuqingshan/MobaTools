@@ -75,12 +75,14 @@ static inline __attribute__((__always_inline__)) void enableSoftLedIsrAS() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 #if defined COMPILING_MOTOSTEPPER_CPP
-/*
-#if defined(USE_SPI2) && defined (ARDUINO_BLUEPILL_F103C8)
-	SPIClass mtSPI(PB15,PB14,PB13); // SPI2 on BluePill
+static byte spiSS;
+#ifdef USE_SPI2
+	SPIClass mtSPI(PB15,PB14,PB13,PB12); // defaults for SPI2 ( an all boards )
+	#undef PIN_SPI_SS
+	#define PIN_SPI_SS PB12
 	#define SPI mtSPI
 #endif
-*/
+
 
 
 static inline __attribute__((__always_inline__)) void enableStepperIsrAS() {
@@ -91,15 +93,19 @@ static inline __attribute__((__always_inline__)) void enableStepperIsrAS() {
 }
 
 static uint8_t spiInitialized = false;
-static inline __attribute__((__always_inline__)) void initSpiAS() {
+static inline __attribute__((__always_inline__)) void initSpiAS(byte ssPin = PIN_SPI_SS, byte clkPin = 255, byte mosiPin = 255 ) {
+	// only SS-Pin can be really set
+	(void)clkPin; (void)mosiPin; // to supress warning about unused parameters {
+	DB_PRINT("ssPin=%d, spiSS=%d, PB12=%d,PA15=%d\n", ssPin,spiSS, PB12, PA15 );
     if ( spiInitialized ) return;
 	SET_TP1;
+	spiSS = ssPin;
     // initialize SPI hardware.
     // MSB first, default Clk Level is 0, shift on leading edge
 	//TODO - initialize Samd SPI
 	SPI.begin();	// Default SPI interface ( instantiated by default )
-	pinMode(PIN_SPI_SS,OUTPUT);
-	digitalWrite(PIN_SPI_SS,HIGH);
+	pinMode(spiSS,OUTPUT);
+	digitalWrite(spiSS,HIGH);
     spiInitialized = true;  
 	CLR_TP1;
 }
@@ -107,13 +113,13 @@ static inline __attribute__((__always_inline__)) void initSpiAS() {
 static inline __attribute__((__always_inline__)) void startSpiWriteAS( uint8_t spiData[] ) {
  	// TODO write step pattern over SPI
 	// Actual without IRQ
-	digitalWrite(PIN_SPI_SS,LOW);
+	digitalWrite(spiSS,LOW);
 	if ( MoToStepper::spi34Used() ) {
 		SPI.transfer16( spiData[1]<<8 | spiData[0] );
 	} else {
 		SPI.transfer( spiData[0] );
 	}
-	digitalWrite(PIN_SPI_SS,HIGH);
+	digitalWrite(spiSS,HIGH);
    #ifdef USE_SPI2
 	#else
 	#endif
