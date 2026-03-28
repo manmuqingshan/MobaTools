@@ -1,7 +1,7 @@
 #pragma once
 //////////////////////////////////////// processor dependent defines and declarations //////////////////////////////////////////
 //------------------------------- STM32 core ------------------------------------------------------------
-#define max(var1,var2) ((var1>var2)?var1:var2)
+#define max(var1,var2) ((var1>var2)?var1:var2)  // Arduino macro doesn't work
 //vvvvvvvvvvvvvvvvvvvvvvvvvv STM32 processors vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 #define __STM32__
 #define IS_32BIT
@@ -16,8 +16,29 @@
 
 #define TIMER_PRESCALER (F_CPU/2000000)  //  = 2MHz timer clock, 0.5us per tic
 #define TICS_PER_MICROSECOND 2 //  = 0.5us
+#if F_CPU > 60000000	// smaller min-gap between to ISR's only for fast CPUs (default is 10µs, set in MoToBase)
+#define MIN_TIC_DIFF TICS_PER_MICROSECOND * 5 // minimal time between 2 interrupts in tics ( end of ISR to start of next ISR )
+#endif
 
-#define MT_TIMER TIM4     // Timer used by MobaTools
+// select the timer used by MobaTools ( highest available general purpose timer )
+#ifdef TIM4
+	#define MT_TIMER TIM4     // Timer used by MobaTools
+	#if MESSAGES>0
+	#pragma message "using timer TIM4"
+	#endif
+#elif defined TIM3
+	#define MT_TIMER TIM3     // Timer used by MobaTools
+	#if MESSAGES>0
+	#pragma message "using timer TIM3"
+	#endif
+#elif defined TIM2
+	#define MT_TIMER TIM2     // Timer used by MobaTools
+	#if MESSAGES>0
+	#pragma message "using timer TIM2"
+	#endif
+#else
+	#error "CPU not supported, no suitable timer"
+#endif
 #define STEP_CHN    1       // OCR channel for Stepper and Leds
 #define SERVO_CHN   2       // OCR channel for Servos
 #define GET_COUNT mtTimer.getCount()

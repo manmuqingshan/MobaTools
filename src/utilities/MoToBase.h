@@ -22,8 +22,6 @@
 	#endif	
 #elif defined ARDUINO_ARCH_STM32F1
 	#include <stm32f1/drivers.h>
-//#elif defined ARDUINO_ARCH_STM32F4
-//	#include <stm32f4/drivers.h>
 #elif defined ARDUINO_ARCH_STM32
 	#include <stm32/drivers.h>
 #elif defined ARDUINO_ARCH_ESP8266
@@ -68,7 +66,9 @@
 	#define uintx8_t uint32_t
 	#define intx8_t	int32_t
     #define nextCycle_t uint32_t	// in CYCLETIME units ( = 1µs on 32Bit MCUs )
-	#define MIN_TIC_DIFF TICS_PER_MICROSECOND * 10 // minimal time between 2 interrupts ( in tics )
+	#ifndef MIN_TIC_DIFF // may have been defined in drivers.h
+		#define MIN_TIC_DIFF TICS_PER_MICROSECOND * 10 // minimal time between 2 interrupts ( in tics )
+	#endif
 	#define USE_JITTER
 	#define MAX_JITTER MIN_STEP_CYCLE/4
 	#ifndef FAST_STEPRESET
