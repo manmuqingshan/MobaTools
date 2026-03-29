@@ -12,7 +12,7 @@ HardwareTimer mtTimer(MT_TIMER);	// create MobaTools timer instance
 TIM_HandleTypeDef *mtTimerHandle;	// needed to disable/enable stepper IRQ 
 uint32_t stepChanIT;				// needed to disable/enable stepper IRQ
 uint8_t noStepISR_Cnt = 0;   // Counter for nested StepISr-disable
-
+uint16_t minTicDiff;		// is set here as variable
 
 void stepperISR(nextCycle_t cyclesLastIRQ)  __attribute__ ((weak));
 void softledISR(nextCycle_t cyclesLastIRQ)  __attribute__ ((weak));
@@ -30,7 +30,7 @@ void ISR_Stepper() {
     // set compareregister to next interrupt time;
 	uint16_t actCompare = mtTimer.getCaptureCompare(STEP_CHN);
 	uint16_t add2Ocr = nextCycle * TICS_PER_MICROSECOND; // tics to add to current compare reg
-	uint16_t minDiff = (mtTimer.getCount()+MIN_TIC_DIFF) - actCompare;
+	uint16_t minDiff = (mtTimer.getCount()+minTicDiff) - actCompare;
 	if (  minDiff >= add2Ocr ) {
 		// counter is already too far
         //CLR_TP2;
@@ -65,6 +65,14 @@ void seizeTimerAS() {
         mtTimer.resume();
 		mtTimerHandle = mtTimer.getHandle(); 
         timerInitialized = true;  
+		
+		// set the min gap between two ISR ( end - to start of next ) depending on the
+		// clock frequency ( faster CPU's can have a smaller gap )
+		if ( F_CPU > FAST_CLOCK ) {
+			minTicDiff = TICS_PER_MICROSECOND * ISR_GAP;
+		} else {
+			minTicDiff = MIN_TIC_DIFF; // default
+		}
 		CLR_TP2;
     }
 }

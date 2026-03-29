@@ -19,7 +19,7 @@ Released versions can be installed by means of the library manager in arduino ID
 - SamD21 (MKR-Series, Nano 33 Iot ...)
 - RP2040 / RP2350 processors ( the [core of Earle Philhower](https://github.com/earlephilhower/arduino-pico) must be used )
 - STM32F103x processors ( with [core of Roger Clark](https://github.com/rogerclarkmelbourne/Arduino_STM32)
-- STM32Fxxx processors with STM32duino core (tested with F103 Blue-/Blackpill, F401/F411 Blackpill and Nucleo F411RE)
+- STM32Xxxx processors with STM32duino core (tested with F103 Blue-/Blackpill, F401/F411 Blackpill and Nucleo F411RE)
 - ESP32 ( core versions 2.x and 3.x )
 - ESP32S3 ( Arduino Nano ESP32 ) and other variants (C3,C6,S3,S2)
 - ESP8266 ( with some restrictions )

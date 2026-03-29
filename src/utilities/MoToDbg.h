@@ -8,7 +8,7 @@
 //#define debugTP
 //#define debugPrint
 // über diese undef's kann das Debugging global abgeschaltet werden
-#undef debugTP
+//#undef debugTP
 #undef debugPrint
 
 #ifdef debugTP 
@@ -232,10 +232,10 @@
 	#elif defined ARDUINO_NUCLEO_F411RE
 		#pragma message "Debugports for NucleoF411RE"
         //Test-HW füer Stepper:
-        #define TP1 A2
-        #define TP2 A3
-        #define TP3 A4 
-        #define TP4 A5
+        #define TP1 PA4 //A2
+        #define TP2 PB0 //A3
+        #define TP3 PC1 //A4 
+        #define TP4 PC0 //A5
         #define MODE_TP1 pinMode( TP1,OUTPUT )   
         #define SET_TP1  digitalWrite( TP1, HIGH )
         #define CLR_TP1  digitalWrite( TP1, LOW )

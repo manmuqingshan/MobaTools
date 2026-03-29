@@ -11,15 +11,15 @@
 
 #define CYCLETIME       1     // Cycle count in µs on 32Bit processors
 #ifndef MIN_STEP_CYCLE
-	#define MIN_STEP_CYCLE       25      // Min. irq-periode in us (
+	#define MIN_STEP_CYCLE       25// Min. step time us (
 #endif								
 
 #define TIMER_PRESCALER (F_CPU/2000000)  //  = 2MHz timer clock, 0.5us per tic
 #define TICS_PER_MICROSECOND 2 //  = 0.5us
-#if F_CPU > 60000000	// smaller min-gap between to ISR's only for fast CPUs (default is 10µs, set in MoToBase)
-#define MIN_TIC_DIFF TICS_PER_MICROSECOND * 5 // minimal time between 2 interrupts in tics ( end of ISR to start of next ISR )
-#endif
-
+#define FAST_CLOCK	60000000	// CPU's with faster clock can have a smaller gap between ISR's
+#define FAST2_Clock 200000000	// even faster CPU's (STM32H7xxx)
+#define ISR_GAP 5				// gap between two ISR in µs for fast CPUs
+#define ISR2_GAP 5				// gap between two ISR in µs for fast CPUs
 // select the timer used by MobaTools ( highest available general purpose timer )
 #ifdef TIM4
 	#define MT_TIMER TIM4     // Timer used by MobaTools
