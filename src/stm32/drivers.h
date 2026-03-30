@@ -10,16 +10,18 @@
 #define MOTOSOFTLED32		// use 32-bit version of SoftLed class
 
 #define CYCLETIME       1     // Cycle count in µs on 32Bit processors
-#ifndef MIN_STEP_CYCLE
-	#define MIN_STEP_CYCLE       25// Min. step time us (
-#endif								
+#define MIN_STEP_CYCLE       minStepCycle // this is a variable in STM32
+// Min. step time us (
 
 #define TIMER_PRESCALER (F_CPU/2000000)  //  = 2MHz timer clock, 0.5us per tic
 #define TICS_PER_MICROSECOND 2 //  = 0.5us
 #define FAST_CLOCK	60000000	// CPU's with faster clock can have a smaller gap between ISR's
-#define FAST2_Clock 200000000	// even faster CPU's (STM32H7xxx)
+#define FAST2_CLOCK 200000000	// even faster CPU's (STM32H7xxx)
 #define ISR_GAP 5				// gap between two ISR in µs for fast CPUs
-#define ISR2_GAP 5				// gap between two ISR in µs for fast CPUs
+#define ISR2_GAP 3				// gap between two ISR in µs for very fast CPUs
+#define MIN_STEP_TIME1	40		// for Clock < FAST_CLOCK
+#define MIN_STEP_TIME2	25		// for Clock < FAST2_CLOCK
+#define MIN_STEP_TIME3	10		// for clock > FAST2_CLOCK
 // select the timer used by MobaTools ( highest available general purpose timer )
 #ifdef TIM4
 	#define MT_TIMER TIM4     // Timer used by MobaTools

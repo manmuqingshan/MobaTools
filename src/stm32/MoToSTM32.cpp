@@ -12,7 +12,8 @@ HardwareTimer mtTimer(MT_TIMER);	// create MobaTools timer instance
 TIM_HandleTypeDef *mtTimerHandle;	// needed to disable/enable stepper IRQ 
 uint32_t stepChanIT;				// needed to disable/enable stepper IRQ
 uint8_t noStepISR_Cnt = 0;   // Counter for nested StepISr-disable
-uint16_t minTicDiff;		// is set here as variable
+uint16_t minTicDiff;		// gap between Interrupts - is set here as variable
+uint8_t minStepCycle = 40;		// minimum step time ( defines fastest steprate )
 
 void stepperISR(nextCycle_t cyclesLastIRQ)  __attribute__ ((weak));
 void softledISR(nextCycle_t cyclesLastIRQ)  __attribute__ ((weak));
@@ -30,16 +31,18 @@ void ISR_Stepper() {
     // set compareregister to next interrupt time;
 	uint16_t actCompare = mtTimer.getCaptureCompare(STEP_CHN);
 	uint16_t add2Ocr = nextCycle * TICS_PER_MICROSECOND; // tics to add to current compare reg
+	SET_TP3;
 	uint16_t minDiff = (mtTimer.getCount()+minTicDiff) - actCompare;
+	CLR_TP3;
 	if (  minDiff >= add2Ocr ) {
 		// counter is already too far
-        //CLR_TP2;
+        SET_TP3;
 		add2Ocr = minDiff;
 		nextCycle = add2Ocr / TICS_PER_MICROSECOND;
-        //SET_TP2;
 	}
 	
     mtTimer.setCaptureCompare(STEP_CHN, actCompare+add2Ocr ) ;
+    CLR_TP3;
     cyclesLastIRQ = nextCycle;
     CLR_TP1; // Oszimessung Dauer der ISR-Routine
 }
@@ -66,12 +69,18 @@ void seizeTimerAS() {
 		mtTimerHandle = mtTimer.getHandle(); 
         timerInitialized = true;  
 		
-		// set the min gap between two ISR ( end - to start of next ) depending on the
-		// clock frequency ( faster CPU's can have a smaller gap )
-		if ( F_CPU > FAST_CLOCK ) {
+		// set the min gap between two ISR ( end of ISR <-> start of next )
+		// and max steprate ( min time between 2 steps ) depending on the
+		// clock frequency ( faster CPU's can have a smaller gap and faster steprate )
+		if ( F_CPU > FAST2_CLOCK ) {
+			minTicDiff = TICS_PER_MICROSECOND * ISR2_GAP;
+			minStepCycle = MIN_STEP_TIME3;
+		} else if ( F_CPU > FAST_CLOCK ) {
 			minTicDiff = TICS_PER_MICROSECOND * ISR_GAP;
+			minStepCycle = MIN_STEP_TIME2;
 		} else {
 			minTicDiff = MIN_TIC_DIFF; // default
+			minStepCycle = MIN_STEP_TIME1;
 		}
 		CLR_TP2;
     }

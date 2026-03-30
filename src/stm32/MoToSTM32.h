@@ -11,6 +11,7 @@ extern uint8_t noStepISR_Cnt;   // Counter for nested StepISr-disable
 extern HardwareTimer mtTimer;
 extern TIM_HandleTypeDef *mtTimerHandle; 
 extern uint32_t stepChanIT;
+extern uint8_t minStepCycle;
 void ISR_Stepper();
 void seizeTimerAS();
 

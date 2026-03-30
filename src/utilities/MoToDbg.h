@@ -8,7 +8,7 @@
 //#define debugTP
 //#define debugPrint
 // über diese undef's kann das Debugging global abgeschaltet werden
-//#undef debugTP
+#undef debugTP
 #undef debugPrint
 
 #ifdef debugTP 
@@ -237,17 +237,17 @@
         #define TP3 PC1 //A4 
         #define TP4 PC0 //A5
         #define MODE_TP1 pinMode( TP1,OUTPUT )   
-        #define SET_TP1  digitalWrite( TP1, HIGH )
-        #define CLR_TP1  digitalWrite( TP1, LOW )
+        #define SET_TP1  LL_GPIO_SetOutputPin(GPIOA , 1<<4)
+        #define CLR_TP1  LL_GPIO_ResetOutputPin(GPIOA , 1<<4)
         #define MODE_TP2 pinMode( TP2,OUTPUT )  
-        #define SET_TP2  digitalWrite( TP2, HIGH )
-        #define CLR_TP2  digitalWrite( TP2, LOW )
+        #define SET_TP2  LL_GPIO_SetOutputPin(GPIOB , 1<<0)
+        #define CLR_TP2  LL_GPIO_ResetOutputPin(GPIOB , 1<<0)
         #define MODE_TP3 pinMode( TP3,OUTPUT )   // 
-        #define SET_TP3  digitalWrite( TP3, HIGH )
-        #define CLR_TP3  digitalWrite( TP3, LOW )
+        #define SET_TP3  LL_GPIO_SetOutputPin(GPIOC , 1<<1)
+        #define CLR_TP3  LL_GPIO_ResetOutputPin(GPIOC , 1<<1)
         #define MODE_TP4 pinMode( TP4,OUTPUT )   // 
-        #define SET_TP4  digitalWrite( TP4, HIGH )
-        #define CLR_TP4  digitalWrite( TP4, LOW )
+        #define SET_TP4  LL_GPIO_SetOutputPin(GPIOC , 1<<0)
+        #define CLR_TP4  LL_GPIO_ResetOutputPin(GPIOC , 1<<0)
  	#else // processor not known
 		#pragma message  "no testpins - processor unknown"
         #define MODE_TP1
