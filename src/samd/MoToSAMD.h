@@ -62,6 +62,7 @@ static inline __attribute__((__always_inline__)) void enableSoftLedIsrAS() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 #if defined COMPILING_MOTOSTEPPER_CPP
+static byte spiSS;
 
 /*static const spi_pins_t board_spi_pins[BOARD_NR_SPI] __FLASH__ =
 {
@@ -73,26 +74,31 @@ static inline __attribute__((__always_inline__)) void enableStepperIsrAS() {
 }
 
 static uint8_t spiInitialized = false;
-static inline __attribute__((__always_inline__)) void initSpiAS() {
+static inline __attribute__((__always_inline__)) void initSpiAS(byte ssPin = PIN_SPI_SS, byte clkPin = 255, byte mosiPin = 255 ) {
+	// only SS-Pin can be really set
+	(void)clkPin; (void)mosiPin; // to supress warning about unused parameters {
+	DB_PRINT("ssPin=%d, spiSS=%d, PB12=%d,PA15=%d\n", ssPin,spiSS, PB12, PA15 );
     if ( spiInitialized ) return;
+	spiSS = ssPin;
     // initialize SPI hardware.
     // MSB first, default Clk Level is 0, shift on leading edge
 	//TODO - initialize Samd SPI
 	SPI.begin();	// Default SPI interface
-	pinMode(PIN_SPI_SS,OUTPUT);
-    spiInitialized = true;  
+	pinMode(spiSS,OUTPUT);
+	digitalWrite(spiSS,HIGH);
+   spiInitialized = true;  
 }
 
 static inline __attribute__((__always_inline__)) void startSpiWriteAS( uint8_t spiData[] ) {
 	// TODO write step pattern over SPI
 	// Actual without IRQ
-	digitalWrite(PIN_SPI_SS,LOW);
+	digitalWrite(spiSS,LOW);
 	if ( MoToStepper::spi34Used() ) {
 		SPI.transfer16( spiData[1]<<8 | spiData[0] );
 	} else {
 		SPI.transfer( spiData[0] );
 	}
-	digitalWrite(PIN_SPI_SS,HIGH);
+	digitalWrite(spiSS,HIGH);
 }    
     
 

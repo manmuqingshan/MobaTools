@@ -8,6 +8,7 @@
 #define IRAM_ATTR       // delete in .cpp files, because it has no meaning for STM32 processors
 #define DRAM_ATTR
 #define MOTOSOFTLED32    // use 32-bit version of SoftLed class
+#define SET_SPI_PINS	// SPI-SS pin can be set individually
 
 #define CYCLETIME       1     // Cycle count is µs on 32Bit processors
 #ifndef MIN_STEP_CYCLE
@@ -61,7 +62,7 @@
 #define GET_COUNT TCx->COUNT16.COUNT.reg)
 extern bool timerInitialized;
 void seizeTimer1();
-#define USE_SPI2          // Use SPI1 if not defined
+//#define USE_SPI2          // Use SPI1 if not defined
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ SAMD ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 #define ARCHITECT_INCLUDE <samd/MoToSAMD.h>
