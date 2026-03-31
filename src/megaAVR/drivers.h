@@ -30,6 +30,7 @@
 		#define MoToSS 10		// standard for other boards
 	#endif
 #endif
+#define SET_SPI_PINS	// SPI-SS pin can be set individually
 
 #define FAST_PORTWRT        // if this is defined, ports are written directly in IRQ-Routines,
                             // not with 'digitalWrite' functions

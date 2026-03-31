@@ -69,13 +69,17 @@ extern volatile PORT_t  *portSS;
 extern uint8_t bitSS;
 #define SET_SS portSS->OUTSET = bitSS 
 #define CLR_SS portSS->OUTCLR = bitSS 
+
 #if defined COMPILING_MOTOSTEPPER_CPP
     static uint8_t spiInitialized = false;
     // Macros für fast setting of SS Port	
     volatile PORT_t  *portSS;
     uint8_t bitSS;
 
-    static inline __attribute__((__always_inline__)) void initSpiAS() {
+static inline __attribute__((__always_inline__)) void initSpiAS(byte ssPin = MoToSS, byte clkPin = 255, byte mosiPin = 255 ) {
+	// only SS-Pin can be really set
+	(void)clkPin; (void)mosiPin; // to supress warning about unused parameters {
+	DB_PRINT("ssPin=%d, spiSS=%d, PB12=%d,PA15=%d\n", ssPin,spiSS, PB12, PA15 );
         if ( spiInitialized ) return;
         // initialize SPI hardware.
         // MSB first, default Clk Level is 0, shift on leading edge
@@ -85,10 +89,10 @@ extern uint8_t bitSS;
         pinMode( MOSI, OUTPUT );
         pinMode( SCK, OUTPUT );
 		// SS is driven by MobaTools and can be any pin ( defined in MobaTools.h )
-		// default is pin 8 for Nano Every and UNO Rev2 WiFi
-        portSS = digitalPinToPortStruct(MoToSS);
-        bitSS = digitalPinToBitMask(MoToSS);
-        pinMode( MoToSS, OUTPUT );
+		// default is pin 8 for Nano Every and UNO Rev2 WiFi (can be overriden by parameter ssPin)
+        portSS = digitalPinToPortStruct(ssPin);
+        bitSS = digitalPinToBitMask(ssPin);
+        pinMode( ssPin, OUTPUT );
 		// Map SPI0-pins
 		PORTMUX_TWISPIROUTEA &=  ~PORTMUX_SPI0_gm; // Clear SPI-Bits
 		PORTMUX_TWISPIROUTEA |=  SPI_MUX; // set MUX according to Board
