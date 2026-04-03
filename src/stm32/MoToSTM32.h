@@ -84,6 +84,15 @@ static byte spiSS;
 	#define SPI mtSPI
 #endif
 
+#ifdef ARDUINO_GENERIC_G030F6PX
+	//Std SPI-Pins of GENERIC_G030F6PX don't work for WeAct STM32G030F6P6
+	SPIClass mtSPI(PA7,PA6,PA5); // defaults for SPI1 ( NOT an all boards )
+	#pragma message "SPI-Pins for STM32G030F6Px: MOSI=PA7,MISO=PA6,CLK=PA5,SS=PA4"
+	#undef PIN_SPI_SS
+	#define PIN_SPI_SS PA4
+	#define SPI mtSPI
+#endif
+
 
 
 static inline __attribute__((__always_inline__)) void enableStepperIsrAS() {
