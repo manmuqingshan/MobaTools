@@ -248,6 +248,26 @@
         #define MODE_TP4 pinMode( TP4,OUTPUT )   // 
         #define SET_TP4  LL_GPIO_SetOutputPin(GPIOC , 1<<0)
         #define CLR_TP4  LL_GPIO_ResetOutputPin(GPIOC , 1<<0)
+
+	#elif defined STM32H7xx 
+		#pragma message "Debugports for WeActMiniH750VBTX"
+        //Test-HW füer Stepper:
+        #define TP1 PB4 //A2
+        #define TP2 PB5 //A3
+        #define TP3 PB6 //A4 
+        #define TP4 PB7 //A5
+        #define MODE_TP1 pinMode( TP1,OUTPUT )   
+        #define SET_TP1  LL_GPIO_SetOutputPin(GPIOB , 1<<4)
+        #define CLR_TP1  LL_GPIO_ResetOutputPin(GPIOB , 1<<4)
+        #define MODE_TP2 pinMode( TP2,OUTPUT )  
+        #define SET_TP2  LL_GPIO_SetOutputPin(GPIOB , 1<<5)
+        #define CLR_TP2  LL_GPIO_ResetOutputPin(GPIOB , 1<<5)
+        #define MODE_TP3 pinMode( TP3,OUTPUT )   // 
+        #define SET_TP3  LL_GPIO_SetOutputPin(GPIOB , 1<<6)
+        #define CLR_TP3  LL_GPIO_ResetOutputPin(GPIOB , 1<<6)
+        #define MODE_TP4 pinMode( TP4,OUTPUT )   // 
+        #define SET_TP4  LL_GPIO_SetOutputPin(GPIOB , 1<<7)
+        #define CLR_TP4  LL_GPIO_ResetOutputPin(GPIOB , 1<<7)
  	#else // processor not known
 		#pragma message  "no testpins - processor unknown"
         #define MODE_TP1

@@ -59,7 +59,9 @@ void seizeTimerAS() {
         mtTimer.pause();
         // IRQ-Priorität des timer interrupt auf lowest (15) setzen
         mtTimer.setInterruptPriority( 15, 15); // These long lasting IRQ's MUST be lowest priority
-        mtTimer.setPrescaleFactor(TIMER_PRESCALER);    // = 0.5µs Tic
+		// with fast CPU's timer is clocked with F_CPU/2, so prescaler is not derived
+		// from F_CPU, but from timer clock
+		mtTimer.setPrescaleFactor(mtTimer.getTimerClkFreq()/2000000);    // = 0.5µs Tic
         mtTimer.setOverflow(0x10000);  //set the period (overflow at max)
         //mtTimer.setCaptureCompare( STEP_CHN, 400 );
         //mtTimer.setCaptureCompare(SERVO_CHN, FIRST_PULSE );
@@ -79,7 +81,7 @@ void seizeTimerAS() {
 			minTicDiff = TICS_PER_MICROSECOND * ISR_GAP;
 			minStepCycle = MIN_STEP_TIME2;
 		} else {
-			minTicDiff = MIN_TIC_DIFF; // default
+			minTicDiff = MIN_TIC_DIFF; // default, defined in MoToBase.h
 			minStepCycle = MIN_STEP_TIME1;
 		}
 		CLR_TP2;

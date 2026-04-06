@@ -13,7 +13,7 @@
 #define MIN_STEP_CYCLE       minStepCycle // this is a variable in STM32
 // Min. step time us (
 
-#define TIMER_PRESCALER (F_CPU/2000000)  //  = 2MHz timer clock, 0.5us per tic
+//#define TIMER_PRESCALER (F_CPU/2000000)  //  = 2MHz timer clock, 0.5us per tic
 #define TICS_PER_MICROSECOND 2 //  = 0.5us
 #define FAST_CLOCK	60000000	// CPU's with faster clock can have a smaller gap between ISR's
 #define FAST2_CLOCK 200000000	// even faster CPU's (STM32H7xxx)
