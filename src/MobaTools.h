@@ -22,7 +22,7 @@
   MobaTools V3.0.0
    
   History:
-  V3.1 xx-2026
+  V3.1 04-2026
   - support of STM32duino core (by STMicroelectronics)
   V3.0 03-2026
   - Old method names (compatibility to V1 ) are no longer available
