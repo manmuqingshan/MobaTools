@@ -75,13 +75,13 @@ void seizeTimerAS() {
 		// and max steprate ( min time between 2 steps ) depending on the
 		// clock frequency ( faster CPU's can have a smaller gap and faster steprate )
 		if ( F_CPU > FAST2_CLOCK ) {
-			minTicDiff = TICS_PER_MICROSECOND * ISR2_GAP;
+			minTicDiff = TICS_PER_MICROSECOND * ISR3_GAP;
 			minStepCycle = MIN_STEP_TIME3;
 		} else if ( F_CPU > FAST_CLOCK ) {
-			minTicDiff = TICS_PER_MICROSECOND * ISR_GAP;
+			minTicDiff = TICS_PER_MICROSECOND * ISR2_GAP;
 			minStepCycle = MIN_STEP_TIME2;
 		} else {
-			minTicDiff = MIN_TIC_DIFF; // default, defined in MoToBase.h
+			minTicDiff = TICS_PER_MICROSECOND * ISR1_GAP;
 			minStepCycle = MIN_STEP_TIME1;
 		}
 		CLR_TP2;

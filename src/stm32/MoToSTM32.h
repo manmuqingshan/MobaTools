@@ -12,6 +12,7 @@ extern HardwareTimer mtTimer;
 extern TIM_HandleTypeDef *mtTimerHandle; 
 extern uint32_t stepChanIT;
 extern uint8_t minStepCycle;
+extern uint16_t minTicDiff;
 void ISR_Stepper();
 void seizeTimerAS();
 

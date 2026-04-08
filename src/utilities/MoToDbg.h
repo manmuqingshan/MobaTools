@@ -8,7 +8,7 @@
 //#define debugTP
 //#define debugPrint
 // über diese undef's kann das Debugging global abgeschaltet werden
-#undef debugTP
+//#undef debugTP
 #undef debugPrint
 
 #ifdef debugTP 
@@ -112,13 +112,17 @@
         #define CLR_TP4  REG_PIOA_CODR = (1<<6)
     #elif defined (__STM32F1__)
         //Test-HW füer Stepper:
+		#if 1
+		#pragma message "Testpins for STM32F1 - RogerClark"
         #define TP1 PB1
         #define TP2 PB0
         #define TP3 PA3 
         #define TP4 PA2
-        #define MODE_TP1 pinMode( TP1,OUTPUT )   // TP1= PA1
+        #define MODE_TP1 pinMode( TP1,OUTPUT )   // TP1= PB1
         #define SET_TP1  digitalWrite( TP1, HIGH )
         #define CLR_TP1  digitalWrite( TP1, LOW )
+        //#define SET_TP1  LL_GPIO_SetOutputPin(GPIOA , LL_GPIO_PIN_2)
+        //#define CLR_TP1  LL_GPIO_ResetOutputPin(GPIOA , LL_GPIO_PIN_2)
         #define MODE_TP2 pinMode( TP2,OUTPUT )  
         #define SET_TP2  digitalWrite( TP2, HIGH )
         #define CLR_TP2  digitalWrite( TP2, LOW )
@@ -128,6 +132,28 @@
         #define MODE_TP4 pinMode( TP4,OUTPUT )   // 
         #define SET_TP4  digitalWrite( TP4, HIGH )
         #define CLR_TP4  digitalWrite( TP4, LOW )
+		#endif
+    #elif defined STM32F1xx
+        //Test-HW füer Stepper:
+		#if 1
+		#pragma message "Testpins for STM32F1 - STM-Core"
+        #define TP1 PA2
+        #define TP2 PA3 
+        #define TP3 PB0
+        #define TP4 PB1
+        #define MODE_TP1 pinMode( TP1,OUTPUT )  
+		#define SET_TP1  LL_GPIO_SetOutputPin(GPIOA , LL_GPIO_PIN_2)
+        #define CLR_TP1  LL_GPIO_ResetOutputPin(GPIOA , LL_GPIO_PIN_2)
+        #define MODE_TP2 pinMode( TP2,OUTPUT )  
+        #define SET_TP2  LL_GPIO_SetOutputPin(GPIOA , LL_GPIO_PIN_3)
+        #define CLR_TP2  LL_GPIO_ResetOutputPin(GPIOA , LL_GPIO_PIN_3)
+        #define MODE_TP3 pinMode( TP3,OUTPUT )   // 
+        #define SET_TP3  LL_GPIO_SetOutputPin(GPIOB , LL_GPIO_PIN_0)
+        #define CLR_TP3  LL_GPIO_ResetOutputPin(GPIOB , LL_GPIO_PIN_0)
+        #define MODE_TP4 pinMode( TP4,OUTPUT )   // 
+        #define SET_TP4  LL_GPIO_SetOutputPin(GPIOB , LL_GPIO_PIN_1)
+        #define CLR_TP4  LL_GPIO_ResetOutputPin(GPIOB , LL_GPIO_PIN_1)
+		#endif
     #elif defined ESP8266
         #define MODE_TP1 pinMode( 15,OUTPUT )  // GPIO 15
         #define SET_TP1  GPOS = (1 << 15)
