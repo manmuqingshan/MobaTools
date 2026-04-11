@@ -8,7 +8,7 @@
 //#define debugTP
 //#define debugPrint
 // über diese undef's kann das Debugging global abgeschaltet werden
-//#undef debugTP
+#undef debugTP
 #undef debugPrint
 
 #ifdef debugTP 
@@ -275,7 +275,7 @@
         #define SET_TP4  LL_GPIO_SetOutputPin(GPIOC , 1<<0)
         #define CLR_TP4  LL_GPIO_ResetOutputPin(GPIOC , 1<<0)
 
-	#elif defined STM32H7xx 
+	#elif defined STM32H7xx || defined STM32G4xx
 		#pragma message "Debugports for WeActMiniH750VBTX"
         //Test-HW füer Stepper:
         #define TP1 PB4 //A2
@@ -283,17 +283,17 @@
         #define TP3 PB6 //A4 
         #define TP4 PB7 //A5
         #define MODE_TP1 pinMode( TP1,OUTPUT )   
-        #define SET_TP1  LL_GPIO_SetOutputPin(GPIOB , 1<<4)
-        #define CLR_TP1  LL_GPIO_ResetOutputPin(GPIOB , 1<<4)
+        #define SET_TP1  LL_GPIO_SetOutputPin(GPIOB , LL_GPIO_PIN_4)
+        #define CLR_TP1  LL_GPIO_ResetOutputPin(GPIOB , LL_GPIO_PIN_4)
         #define MODE_TP2 pinMode( TP2,OUTPUT )  
-        #define SET_TP2  LL_GPIO_SetOutputPin(GPIOB , 1<<5)
-        #define CLR_TP2  LL_GPIO_ResetOutputPin(GPIOB , 1<<5)
+        #define SET_TP2  LL_GPIO_SetOutputPin(GPIOB , LL_GPIO_PIN_5)
+        #define CLR_TP2  LL_GPIO_ResetOutputPin(GPIOB , LL_GPIO_PIN_5)
         #define MODE_TP3 pinMode( TP3,OUTPUT )   // 
-        #define SET_TP3  LL_GPIO_SetOutputPin(GPIOB , 1<<6)
-        #define CLR_TP3  LL_GPIO_ResetOutputPin(GPIOB , 1<<6)
+        #define SET_TP3  LL_GPIO_SetOutputPin(GPIOB , LL_GPIO_PIN_6)
+        #define CLR_TP3  LL_GPIO_ResetOutputPin(GPIOB , LL_GPIO_PIN_6)
         #define MODE_TP4 pinMode( TP4,OUTPUT )   // 
-        #define SET_TP4  LL_GPIO_SetOutputPin(GPIOB , 1<<7)
-        #define CLR_TP4  LL_GPIO_ResetOutputPin(GPIOB , 1<<7)
+        #define SET_TP4  LL_GPIO_SetOutputPin(GPIOB , LL_GPIO_PIN_7)
+        #define CLR_TP4  LL_GPIO_ResetOutputPin(GPIOB , LL_GPIO_PIN_7)
  	#else // processor not known
 		#pragma message  "no testpins - processor unknown"
         #define MODE_TP1

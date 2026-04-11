@@ -19,6 +19,8 @@ void stepperISR(nextCycle_t cyclesLastIRQ)  __attribute__ ((weak));
 void softledISR(nextCycle_t cyclesLastIRQ)  __attribute__ ((weak));
 nextCycle_t nextCycle;
 static nextCycle_t cyclesLastIRQ = 1;  // cycles since last IRQ
+static uint16_t actCompare;
+
 void ISR_Stepper() {
     // Channel 1, used for stepper motor and softleds, starts every nextCycle us
     // nextCycle ist set in stepperISR and softledISR
@@ -29,21 +31,27 @@ void ISR_Stepper() {
     if ( softledISR ) softledISR(cyclesLastIRQ);
     // ======================= end of softleds =====================================
     // set compareregister to next interrupt time;
-	uint16_t actCompare = mtTimer.getCaptureCompare(STEP_CHN);
-	uint16_t add2Ocr = nextCycle * TICS_PER_MICROSECOND; // tics to add to current compare reg
 	SET_TP3;
+	uint16_t add2Ocr = nextCycle * TICS_PER_MICROSECOND; // tics to add to current compare reg
+	noInterrupts(); // setting new compare is time critical
+	SET_TP4;
 	uint16_t minDiff = (mtTimer.getCount()+minTicDiff) - actCompare;
+	CLR_TP4;
 	CLR_TP3;
 	if (  minDiff >= add2Ocr ) {
 		// counter is already too far
         SET_TP3;
 		add2Ocr = minDiff;
 		nextCycle = add2Ocr / TICS_PER_MICROSECOND;
+		CLR_TP3;
 	}
-	
-    mtTimer.setCaptureCompare(STEP_CHN, actCompare+add2Ocr ) ;
-    CLR_TP3;
+	actCompare += add2Ocr;
+	SET_TP4;
+	mtTimer.setCaptureCompare(STEP_CHN, actCompare ) ;
+ 	CLR_TP4;
+	interrupts();
     cyclesLastIRQ = nextCycle;
+	interrupts();
     CLR_TP1; // Oszimessung Dauer der ISR-Routine
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +66,7 @@ void seizeTimerAS() {
         //mtTimer.init( MT_TIMER );
         mtTimer.pause();
         // IRQ-Priorität des timer interrupt auf lowest (15) setzen
-        mtTimer.setInterruptPriority( 15, 15); // These long lasting IRQ's MUST be lowest priority
+        mtTimer.setInterruptPriority( 15, 15); // 
 		// with fast CPU's timer is clocked with F_CPU/2, so prescaler is not derived
 		// from F_CPU, but from timer clock
 		mtTimer.setPrescaleFactor(mtTimer.getTimerClkFreq()/2000000);    // = 0.5µs Tic
@@ -74,7 +82,9 @@ void seizeTimerAS() {
 		// set the min gap between two ISR ( end of ISR <-> start of next )
 		// and max steprate ( min time between 2 steps ) depending on the
 		// clock frequency ( faster CPU's can have a smaller gap and faster steprate )
-		if ( F_CPU > FAST2_CLOCK ) {
+		minTicDiff = (450000000/F_CPU) +3;  // Min is 3 for Clockrates > 450MHz
+		minStepCycle =  1000000000/F_CPU;	//15 ... 2
+		/*if ( F_CPU > FAST2_CLOCK ) {
 			minTicDiff = TICS_PER_MICROSECOND * ISR3_GAP;
 			minStepCycle = MIN_STEP_TIME3;
 		} else if ( F_CPU > FAST_CLOCK ) {
@@ -83,7 +93,8 @@ void seizeTimerAS() {
 		} else {
 			minTicDiff = TICS_PER_MICROSECOND * ISR1_GAP;
 			minStepCycle = MIN_STEP_TIME1;
-		}
+		}*/
+		actCompare = mtTimer.getCaptureCompare(STEP_CHN);
 		CLR_TP2;
     }
 }
