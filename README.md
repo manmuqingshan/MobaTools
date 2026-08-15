@@ -67,7 +67,9 @@ Contains Methods to create pwm and tone outputs.
 
 | Version |  Release Date  | Description
 | ------- |  ------------  | -----------
-| 3.1.0 | 2026-04-xx| 
+| 3.1.1 | 2026-08-15| 
+| | | Bugfix MoToTimer
+| 3.1.0 | 2026-04-11| 
 | | | support of the STM32duino core (STMicrosystems)
 | | | some optimizations and bugfixes
 | 3.0.0 | 2026-03-07| 

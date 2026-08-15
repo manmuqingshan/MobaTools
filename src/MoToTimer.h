@@ -4,7 +4,7 @@
 // Class MoToTimer - Timer management for time delays in the loop
 /*
     MoToTimer myTimer(unsigned long value ) // Create Timerobject with initially setting time
-    MoToTimer myTimer()                 // Create Timerobject without setting time
+    MoToTimer myTimer                   // Create Timerobject without setting time
     void setTime( unsigned long value ) // Start Timer with new time value
     void restart()                      // Restart Timer with last set time value ( setTime )
     bool running()                      // True while timer is running
@@ -16,8 +16,8 @@
 */
 // Class MoToTimebase - create regular Events in fixed time distance
 /*
-    MoToTimebase myTimerbase()          // Create Timerobject
-    void setBasetime( long value )       // set intervall time ( timer is not started if negative )
+    MoToTimebase myTimerbase            // Create Timerobject
+    void setBasetime( long value )      // set intervall time ( timer is not started if negative )
     void tick( )                        // true if intervalltime elapsed ( must be called regularly to start event )
     void stop()                         // stop creating ticks ( tick() will always return false )
     void start()                        // Start creating ticks if a time is set, but it is not running
@@ -108,7 +108,7 @@ class MoToTimer
     
   public:
     MoToTimer(unsigned long firstTime = 0) {
-        active = 0;
+        active = firstTime>0? RUNNING | NOTEXPIRED : 0;
         startTime = 0;
         runTime = firstTime;
     }
