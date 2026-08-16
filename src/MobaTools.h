@@ -22,6 +22,8 @@
   MobaTools V3.0.0
    
   History:
+  V3.1.1 08-2026
+  - The time specified when instantiating a MoToTimer object did not start.
   V3.1 04-2026
   - support of STM32duino core (by STMicroelectronics)
   V3.0 03-2026
