@@ -24,7 +24,7 @@ Released versions can be installed by means of the library manager in arduino ID
 - ESP32S3 ( Arduino Nano ESP32 ) and other variants (C3,C6,S3,S2)
 - ESP8266 ( with some restrictions )
 
-A documentation file in [german](https://github.com/MicroBahner/MobaTools/blob/master/MobaTools-310-de.pdf) and [english](https://github.com/MicroBahner/MobaTools/blob/master/MobaTools-310-en.pdf) is provided.
+A documentation file in [german](https://github.com/MicroBahner/MobaTools/blob/master/MobaTools-311-de.pdf) and [english](https://github.com/MicroBahner/MobaTools/blob/master/MobaTools-311-en.pdf) is provided.
 
 ### Classes
 
